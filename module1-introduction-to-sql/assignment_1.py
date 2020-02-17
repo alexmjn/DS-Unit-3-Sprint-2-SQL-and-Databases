@@ -59,8 +59,19 @@ FROM charactercreator_character_inventory
 JOIN armory_weapon
 ON charactercreator_character_inventory.item_id = armory_weapon.item_ptr_id
 GROUP BY character_id
-LIMIT 20
+LIMIT 5
 """
 result = cursor.execute(query).fetchall()
 for row in result:
     print(row[0], row[1])
+
+query = """
+SELECT
+    count(item_id) as item_count,
+    count(distinct character_id) as character_count
+FROM charactercreator_character_inventory
+"""
+result = cursor.execute(query).fetchall()
+for row in result:
+    print(dict(row))
+print("Items per char:", result[0]["item_count"]/result[0]["character_count"])

@@ -27,3 +27,40 @@ for database in ["mage", "thief", "cleric", "fighter"]:
     """
     result = cursor.execute(query).fetchall()
     print(database, result[0][0])
+
+query = "SELECT count(distinct item_id) FROM armory_item"
+result = cursor.execute(query).fetchall()
+n_items = result[0][0]
+print(f"There are {n_items} items")
+
+query = "SELECT count(distinct item_ptr_id) FROM armory_weapon"
+result = cursor.execute(query).fetchall()
+n_weapons = result[0][0]
+print(f"The percentage of weapons is {n_weapons/n_items:.2f}")
+
+#need to join to get character names
+query = """
+SELECT
+    character_id,
+    count(distinct id) as total_items
+FROM charactercreator_character_inventory
+GROUP BY character_id
+LIMIT 20
+"""
+result = cursor.execute(query).fetchall()
+for row in result:
+    print(row[0], row[1])
+
+query = """
+SELECT
+    charactercreator_character_inventory.character_id,
+    count(distinct charactercreator_character_inventory.id)
+FROM charactercreator_character_inventory
+JOIN armory_weapon
+ON charactercreator_character_inventory.item_id = armory_weapon.item_ptr_id
+GROUP BY character_id
+LIMIT 20
+"""
+result = cursor.execute(query).fetchall()
+for row in result:
+    print(row[0], row[1])

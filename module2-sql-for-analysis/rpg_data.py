@@ -1,6 +1,7 @@
 import psycopg2
 import os
-#linting doesn't like this line, but working fine.
+import sqlite3
+# linting doesn't like this line, but working fine.
 from dotenv import load_dotenv
 
 load_dotenv()

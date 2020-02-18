@@ -6,6 +6,7 @@ connection.row_factory = sqlite3.Row
 
 cursor = connection.cursor()
 
+#comment queries with what they're doing
 query = "SELECT count(distinct character_id) FROM charactercreator_character"
 result = cursor.execute(query).fetchall()
 print(f"There are {result[0][0]} characters")
@@ -56,6 +57,7 @@ result = cursor.execute(query).fetchall()
 for row in result:
     print(row[0], row[1])
 
+#any characters with no items? include them
 query = """
 SELECT
     count(item_id) as item_count,
